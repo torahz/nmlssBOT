@@ -1,14 +1,14 @@
-import requests
-from bs4 import BeautifulSoup
+import os
+import pathlib
 from chat import Chat
 
-arquivo_respostas = 'respostas.json'
+arquivo_respostas = pathlib.Path('respostas.json')
 
 try:
     with open(arquivo_respostas) as arquivo:
         respostas_aprendidas = json.load(arquivo)
 except FileNotFoundError:
-        respostas_aprendidas = {}
+    respostas_aprendidas = {}
 
 respostas_fixas = {
     "oi": ["olá", "Oi tudo bem?", "Eae"],
@@ -63,7 +63,7 @@ def responde(pergunta):
     print("Bot: ", resposta)
 
 if arquivo_respostas.is_file():
-    with open(arquivo_respostas, 'w') as arquivo:
-        json.dump(respostas_aprendidas, arquivo)
+    with open(arquivo_respostas) as arquivo:
+        respostas_aprendidas = json.load(arquivo)
 
 print("Conversa encerrada!")
