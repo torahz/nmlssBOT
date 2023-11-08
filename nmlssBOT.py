@@ -1,15 +1,15 @@
-import nltk
 from nltk.chat.util import Chat, reflections
 
-# Adicione pares de perguntas e respostas para treinar o chatbot
+# Adicione pares de perguntas e respostas
 pares = [
-    ['Olá', ['Olá!', 'Oi! Como posso ajudar?']],
-    ['Qual é o seu nome?', ['Eu sou um chatbot treinável.', 'Meu nome é ChatGPT.']],
-    # Adicione mais pares aqui
+    ['Eu gosto de (.*)', ['Por que você gosta de \\1?', 'Isso é interessante.']],
+    ['Eu sou (.*)', ['Você é \\1?', 'Por que você se identifica como \\1?']],
 ]
 
-# Adicione mais reflexões para melhorar as respostas
-reflexoes = reflections
+# Adicione reflexões
+reflexoes = {
+    r'eu sou (.*)': ['Você é \\1?', 'Por que você acha que é \\1?']
+}
 
 # Crie um objeto Chat
 chatbot = Chat(pares, reflexoes)
