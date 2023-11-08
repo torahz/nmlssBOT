@@ -17,18 +17,27 @@ respostas_fixas = {
   "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]  
 }
 
-def responde(pergunta):
-  if pergunta in respostas_fixas:
-    return random.choice(respostas_fixas[pergunta])
-  elif pergunta in respostas_aprendidas:
-    return random.choice(respostas_aprendidas[pergunta])
+def get_resposta(pergunta):
+  resposta_da_web = busca_na_web(pergunta)
+  resposta_fixa = respostas_fixas.get(pergunta)
+  resposta_aprendida = respostas_aprendidas.get(pergunta)
+
+  if resposta_da_web:
+    return resposta_da_web
+  elif resposta_fixa:
+    return random.choice(resposta_fixa)
   else:
     return "Ainda não sei responder essa pergunta. Pode me ensinar?"
 
+def responde(pergunta):
+  resposta = get_resposta(pergunta)
+  return resposta
+
 def aprende_resposta(pergunta, resposta):
-  if pergunta not in respostas_aprendidas:
-    respostas_aprendidas[pergunta] = []
-  respostas_aprendidas[pergunta].append(resposta)
+  try:
+    respostas_aprendidas[pergunta].append(resposta)
+  except KeyError:
+    respostas_aprendidas[pergunta] = [resposta]
   
 print("Olá, eu sou o Bot!")
 
