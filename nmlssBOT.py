@@ -17,7 +17,7 @@ respostas_fixas = {
   "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]
 }
 
-with open('dicptbrverb.txt', 'r') as arquivo:
+with open('dicptbrverb.json', 'r') as arquivo:
   dicionario = json.load(arquivo)
 
 def busca_na_web(pergunta):
