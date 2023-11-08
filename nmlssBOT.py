@@ -3,7 +3,7 @@ import pathlib
 import json
 import requests
 from bs4 import BeautifulSoup
-from chat import Chat
+from nltk.chat.util import Chat, reflections
 
 arquivo_respostas = pathlib.Path('respostas.json')
 
@@ -60,7 +60,7 @@ def get_resposta(pergunta):
 
 def responde(pergunta):
     pares = list(respostas_fixas.items())
-    chatbot = Chat(pares, reflections)
+    chatbot = Chat(pares, reflexoes)
 
     while True:
         pergunta = input("Você: ")
