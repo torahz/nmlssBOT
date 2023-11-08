@@ -1,6 +1,5 @@
-import random
-import json
-from nltk.chat.util import Chat, reflections
+import requests
+from bs4 import BeautifulSoup
 
 arquivo_respostas = 'respostas.json'
 
@@ -16,6 +15,32 @@ respostas_fixas = {
   "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
   "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]  
 }
+
+def busca_na_web(pergunta):
+  """
+  Faz uma busca no Google e retorna uma resposta concisa.
+
+  Args:
+    pergunta: A pergunta a ser buscada.
+
+  Returns:
+    Uma resposta concisa da web, ou None se não for encontrada.
+  """
+
+  # Fazer uma solicitação HTTP para o Google
+
+  url = "https://www.google.com/search?q=" + pergunta
+  resposta = requests.get(url)
+
+  # Extrair a resposta da solicitação
+
+  if resposta.status_code == 200:
+    soup = BeautifulSoup(resposta.content, 'html.parser')
+    resultado = soup.find("div", class_="g")
+    resposta_resumida = resultado.find("span").text
+    return resposta_resumida
+  else:
+    return None
 
 def get_resposta(pergunta):
   resposta_da_web = busca_na_web(pergunta)
