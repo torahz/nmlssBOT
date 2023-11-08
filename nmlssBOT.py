@@ -59,11 +59,8 @@ def responde(pergunta):
     pares = list(respostas_fixas.items())
     chatbot = Chat(pares, reflections)
 
-    resposta = get_resposta(pergunta)
-    print("Bot: ", resposta)
-
-if arquivo_respostas.is_file():
-    with open(arquivo_respostas) as arquivo:
-        respostas_aprendidas = json.load(arquivo)
-
-print("Conversa encerrada!")
+    while True:
+        pergunta = input("Você: ")
+        if pergunta != "sair":
+            resposta = get_resposta(pergunta)
+            print("Bot: ", resposta)
