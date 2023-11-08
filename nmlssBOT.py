@@ -1,11 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+from nmlssBOT import Chat
 
 arquivo_respostas = 'respostas.json'
 
 try:
   with open(arquivo_respostas) as arquivo:
-    respostas_aprendidas = json.load(arquivo)  
+    respostas_aprendidas = json.load(arquivo)
 except FileNotFoundError:
   respostas_aprendidas = {}
 
@@ -13,7 +14,7 @@ respostas_fixas = {
   "oi": ["olá", "Oi tudo bem?", "Eae"],
   "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
   "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
-  "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]  
+  "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]
 }
 
 def busca_na_web(pergunta):
@@ -63,11 +64,11 @@ def aprende_resposta(pergunta, resposta):
     respostas_aprendidas[pergunta].append(resposta)
   except KeyError:
     respostas_aprendidas[pergunta] = [resposta]
-  
+
 print("Olá, eu sou o Bot!")
 
 pares = list(respostas_fixas.items())
-chatbot = Chat(pares, reflections)  
+chatbot = Chat(pares, reflections)
 
 while True:
   pergunta = input("Você: ")
@@ -81,8 +82,8 @@ while True:
     nova_resposta = input("Ensine a resposta: ")
     aprende_resposta(pergunta, nova_resposta)
     print("Resposta aprendida com sucesso!")
-    
+
 with open(arquivo_respostas, 'w') as arquivo:
   json.dump(respostas_aprendidas, arquivo)
-  
+
 print("Conversa encerrada!")
