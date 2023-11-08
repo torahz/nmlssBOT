@@ -53,7 +53,7 @@ def get_resposta(pergunta):
     elif resposta_fixa:
         return resposta_fixa
     else:
-        return "Ainda não sei responder essa pergunta. Pode me ensinar?"
+        return "Desculpe, não sei responder essa pergunta."
 
 def responde(pergunta):
     pares = list(respostas_fixas.items())
@@ -61,6 +61,5 @@ def responde(pergunta):
 
     while True:
         pergunta = input("Você: ")
-        if pergunta != "sair":
-            resposta = get_resposta(pergunta)
-            print("Bot: ", resposta)
+        resposta = get_resposta(pergunta)
+        print("Bot: ", resposta)
