@@ -1,12 +1,12 @@
-import random
 import json
+import random
 from nltk.chat.util import Chat, reflections
 
-arquivo_respostas = 'respostas.json'
+arquivo_respostas = 'respostas.json' 
 
 try:
   with open(arquivo_respostas) as arquivo:
-    respostas_aprendidas = json.load(arquivo)  
+    respostas_aprendidas = json.load(arquivo)
 except FileNotFoundError:
   respostas_aprendidas = {}
 
@@ -14,41 +14,46 @@ respostas_fixas = {
   "oi": ["olá", "Oi tudo bem?", "Eae"],
   "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
   "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
-  "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]  
+  "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]   
 }
 
+with open('dicptbrverb.txt') as arquivo:
+  dicionario = json.load(arquivo)
+
+def busca_na_web(pergunta):
+  # Busca na web 
+  resposta = #busca e extrai resposta
+  
+  return resposta
+
+def busca_no_dicionario(pergunta):
+
+  #Busca no dicionário 
+  resposta = #busca palavras relacionadas e forma resposta 
+  
+  return resposta
+  
 def responde(pergunta):
-  if pergunta in respostas_fixas:
-    return random.choice(respostas_fixas[pergunta])
-  elif pergunta in respostas_aprendidas:
-    return random.choice(respostas_aprendidas[pergunta])
-  else:
-    return "Ainda não sei responder essa pergunta. Pode me ensinar?"
-
-def aprende_resposta(pergunta, resposta):
-  if pergunta not in respostas_aprendidas:
-    respostas_aprendidas[pergunta] = []
-  respostas_aprendidas[pergunta].append(resposta)
   
-print("Olá, eu sou o Bot!")
-
-pares = list(respostas_fixas.items())
-chatbot = Chat(pares, reflections)  
-
-while True:
-  pergunta = input("Você: ")
-  if pergunta == "sair":
-    break
-
-  resposta = responde(pergunta)
-  print("Bot: ", resposta)
-
-  if resposta == "Ainda não sei responder essa pergunta. Pode me ensinar?":
-    nova_resposta = input("Ensine a resposta: ")
-    aprende_resposta(pergunta, nova_resposta)
-    print("Resposta aprendida com sucesso!")
+  resposta = busca_na_web(pergunta)
+  
+  if not resposta:
+  
+    resposta = busca_no_dicionario(pergunta)
     
-with open(arquivo_respostas, 'w') as arquivo:
-  json.dump(respostas_aprendidas, arquivo)
+    if not resposta:
+    
+      if pergunta in respostas_fixas:
+        resposta = random.choice(respostas_fixas[pergunta])
+        
+      elif pergunta in respostas_aprendidas:
+        resposta = random.choice(respostas_aprendidas[pergunta])
+        
+      else:
+        resposta = "Ainda não sei responder essa pergunta. Pode me ensinar?"
   
-print("Conversa encerrada!")
+  return resposta 
+
+# resto do código...
+
+# ao final, salva respostas aprendidas no arquivo
