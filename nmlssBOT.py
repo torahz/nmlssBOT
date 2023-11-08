@@ -5,8 +5,8 @@ from nltk.chat.util import Chat, reflections
 arquivo_respostas = 'respostas.json'
 
 try:
-  with open(arquivo_respostas) as arquivo:
-    respostas_aprendidas = json.load(arquivo)  
+  with open(arquivo_respostas, 'r') as arquivo:
+    respostas_aprendidas = json.load(arquivo)
 except FileNotFoundError:
   respostas_aprendidas = {}
 
@@ -17,7 +17,7 @@ respostas_fixas = {
   "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]
 }
 
-with open('dicptbrverb.txt') as arquivo:
+with open('dicptbrverb.txt', 'r') as arquivo:
   dicionario = json.load(arquivo)
 
 def busca_na_web(pergunta):
