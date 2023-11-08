@@ -1,5 +1,8 @@
 import os
 import pathlib
+import json
+import requests
+from bs4 import BeautifulSoup
 from chat import Chat
 
 arquivo_respostas = pathlib.Path('respostas.json')
@@ -51,7 +54,7 @@ def get_resposta(pergunta):
     if resposta_da_web:
         return resposta_da_web
     elif resposta_fixa:
-        return resposta_fixa
+        return random.choice(resposta_fixa)  # Adicionado para escolher uma resposta fixa aleatória
     else:
         return "Desculpe, não sei responder essa pergunta."
 
@@ -63,3 +66,8 @@ def responde(pergunta):
         pergunta = input("Você: ")
         resposta = get_resposta(pergunta)
         print("Bot: ", resposta)
+
+# Adicione prints de debug
+print("Antes do responde")
+responde("Teste")
+print("Depois do responde")
