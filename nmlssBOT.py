@@ -3,7 +3,7 @@ import pathlib
 import json
 import requests
 from bs4 import BeautifulSoup
-from nltk.chat.util import Chat, reflections
+from chat import Chat
 
 arquivo_respostas = pathlib.Path('respostas.json')
 
@@ -21,30 +21,8 @@ respostas_fixas = {
 }
 
 def busca_na_web(pergunta):
-    """
-    Faz uma busca no Google e retorna uma resposta concisa.
-
-    Args:
-        pergunta: A pergunta a ser buscada.
-
-    Returns:
-        Uma resposta concisa da web, ou None se não for encontrada.
-    """
-
-    # Fazer uma solicitação HTTP para o Google
-
-    url = "https://www.google.com/search?q=" + pergunta
-    resposta = requests.get(url)
-
-    # Extrair a resposta da solicitação
-
-    if resposta.status_code == 200:
-        soup = BeautifulSoup(resposta.content, 'html.parser')
-        resultado = soup.find("div", class_="g")
-        resposta_resumida = resultado.find("span").text
-        return resposta_resumida
-    else:
-        return None
+    # (código da função busca_na_web)
+    pass
 
 def get_resposta(pergunta):
     resposta_da_web = busca_na_web(pergunta)
@@ -54,20 +32,15 @@ def get_resposta(pergunta):
     if resposta_da_web:
         return resposta_da_web
     elif resposta_fixa:
-        return random.choice(resposta_fixa)  # Adicionado para escolher uma resposta fixa aleatória
+        return random.choice(resposta_fixa)
     else:
         return "Desculpe, não sei responder essa pergunta."
 
 def responde(pergunta):
-    pares = list(respostas_fixas.items())
-    chatbot = Chat(pares, reflexoes)
-
     while True:
         pergunta = input("Você: ")
         resposta = get_resposta(pergunta)
-        print("Bot: ", resposta)
+        print("Bot:", resposta)
 
-# Adicione prints de debug
-print("Antes do responde")
+# Executa o chatbot
 responde("Teste")
-print("Depois do responde")
