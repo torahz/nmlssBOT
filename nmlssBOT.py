@@ -2,7 +2,7 @@ import random
 import nltk
 from nltk.chat.util import Chat, reflections
 
-# Respostas iniciais 
+# Respostas iniciais  
 respostas = {
   "oi": ["olá", "Oi tudo bem?", "Eae"],
   "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
@@ -11,7 +11,7 @@ respostas = {
 }
 
 # Respostas aprendidas
-respostas_aprendidas = {} 
+respostas_aprendidas = {}
 
 def responde(pergunta):
   if pergunta in respostas:
@@ -28,12 +28,16 @@ def aprende_resposta(pergunta, resposta):
 
 print("Olá, eu sou o Bot!")
 
-chatbot = Chat(respostas, reflections)
+# Converte o dicionário para a lista de tuplas
+pares = list(respostas.items()) 
+
+# Cria o chatbot passando a lista de tuplas
+chatbot = Chat(pares, reflections)
 
 while True:
   pergunta = input("Você: ")
   if pergunta == "sair":
-    print("Bot: Tchau!")  
+    print("Bot: Tchau!")
     break
 
   resposta = responde(pergunta)
