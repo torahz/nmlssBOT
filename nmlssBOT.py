@@ -1,21 +1,25 @@
 import random
-import nltk
+import json
 from nltk.chat.util import Chat, reflections
 
-# Respostas iniciais  
-respostas = {
+arquivo_respostas = 'respostas.json'
+
+try:
+  with open(arquivo_respostas) as arquivo:
+    respostas_aprendidas = json.load(arquivo)  
+except FileNotFoundError:
+  respostas_aprendidas = {}
+
+respostas_fixas = {
   "oi": ["olá", "Oi tudo bem?", "Eae"],
   "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
   "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
-  "como você está?": ["Estou bem, obrigado por perguntar!","Não poderia estar melhor!"]
+  "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]  
 }
 
-# Respostas aprendidas
-respostas_aprendidas = {}
-
 def responde(pergunta):
-  if pergunta in respostas:
-    return random.choice(respostas[pergunta])
+  if pergunta in respostas_fixas:
+    return random.choice(respostas_fixas[pergunta])
   elif pergunta in respostas_aprendidas:
     return random.choice(respostas_aprendidas[pergunta])
   else:
@@ -25,27 +29,26 @@ def aprende_resposta(pergunta, resposta):
   if pergunta not in respostas_aprendidas:
     respostas_aprendidas[pergunta] = []
   respostas_aprendidas[pergunta].append(resposta)
-
+  
 print("Olá, eu sou o Bot!")
 
-# Converte o dicionário para a lista de tuplas
-pares = list(respostas.items()) 
-
-# Cria o chatbot passando a lista de tuplas
-chatbot = Chat(pares, reflections)
+pares = list(respostas_fixas.items())
+chatbot = Chat(pares, reflections)  
 
 while True:
   pergunta = input("Você: ")
   if pergunta == "sair":
-    print("Bot: Tchau!")
     break
 
   resposta = responde(pergunta)
   print("Bot: ", resposta)
 
   if resposta == "Ainda não sei responder essa pergunta. Pode me ensinar?":
-    resposta_ensinada = input("Ensine a resposta: ")
-    aprende_resposta(pergunta, resposta_ensinada)
+    nova_resposta = input("Ensine a resposta: ")
+    aprende_resposta(pergunta, nova_resposta)
     print("Resposta aprendida com sucesso!")
-
-print("Conversa encerrada")
+    
+with open(arquivo_respostas, 'w') as arquivo:
+  json.dump(respostas_aprendidas, arquivo)
+  
+print("Conversa encerrada!")
