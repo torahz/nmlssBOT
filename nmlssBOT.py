@@ -56,19 +56,10 @@ def get_resposta(pergunta):
         return "Ainda não sei responder essa pergunta. Pode me ensinar?"
 
 def responde(pergunta):
+    pares = list(respostas_fixas.items())
+    chatbot = Chat(pares, reflections)
+
     resposta = get_resposta(pergunta)
-    return resposta
-
-print("Olá, eu sou o Bot!")
-
-chatbot = Chat(pares, reflections)
-
-while True:
-    pergunta = input("Você: ")
-    if pergunta == "sair":
-        break
-
-    resposta = responde(pergunta)
     print("Bot: ", resposta)
 
 if arquivo_respostas.is_file():
