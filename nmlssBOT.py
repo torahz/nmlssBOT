@@ -1,33 +1,47 @@
+import random
+import nltk
 from nltk.chat.util import Chat, reflections
 
-# Adicione pares de perguntas e respostas
-pares = [
-    ['Eu gosto de (.*)', ['Por que você gosta de \\1?', 'Isso é interessante.']],
-    ['Eu sou (.*)', ['Você é \\1?', 'Por que você se identifica como \\1?']],
-]
-
-# Adicione reflexões
-reflexoes = {
-    r'eu sou (.*)': ['Você é \\1?', 'Por que você acha que é \\1?']
+# Respostas iniciais 
+respostas = {
+  "oi": ["olá", "Oi tudo bem?", "Eae"],
+  "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
+  "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
+  "como você está?": ["Estou bem, obrigado por perguntar!","Não poderia estar melhor!"]
 }
 
-# Crie um objeto Chat
-chatbot = Chat(pares, reflexoes)
+# Respostas aprendidas
+respostas_aprendidas = {} 
 
-# Função para iniciar a conversa
-def converse():
-    print("Bem-vindo ao Chatbot! (Digite 'sair' para sair)")
-    while True:
-        try:
-            user_input = input("Você: ")
-            if user_input.lower() == 'sair':
-                print("Até logo!")
-                break
-            else:
-                response = chatbot.respond(user_input)
-                print("Bot:", response)
-        except Exception as e:
-            print("Ocorreu um erro:", e)
+def responde(pergunta):
+  if pergunta in respostas:
+    return random.choice(respostas[pergunta])
+  elif pergunta in respostas_aprendidas:
+    return random.choice(respostas_aprendidas[pergunta])
+  else:
+    return "Ainda não sei responder essa pergunta. Pode me ensinar?"
 
-# Inicie a conversa
-converse()
+def aprende_resposta(pergunta, resposta):
+  if pergunta not in respostas_aprendidas:
+    respostas_aprendidas[pergunta] = []
+  respostas_aprendidas[pergunta].append(resposta)
+
+print("Olá, eu sou o Bot!")
+
+chatbot = Chat(respostas, reflections)
+
+while True:
+  pergunta = input("Você: ")
+  if pergunta == "sair":
+    print("Bot: Tchau!")  
+    break
+
+  resposta = responde(pergunta)
+  print("Bot: ", resposta)
+
+  if resposta == "Ainda não sei responder essa pergunta. Pode me ensinar?":
+    resposta_ensinada = input("Ensine a resposta: ")
+    aprende_resposta(pergunta, resposta_ensinada)
+    print("Resposta aprendida com sucesso!")
+
+print("Conversa encerrada")
