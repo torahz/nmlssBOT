@@ -1,18 +1,39 @@
-import nltk
-import wikipedia
+import subprocess
+import sys 
+
+def install(package):
+    subprocess.call([sys.executable, "-m", "pip", "install", package])
+
+def import_or_install(package):
+    try:
+        __import__(package)
+    except ImportError:
+        print(f"Instalando pacote {package}...")
+        install(package)
+
+import_or_install('pip') 
+
+import_or_install('requests')
+import_or_install('urllib3')
+
+import requests
+import urllib.parse
 
 print("NamelessBOT: Olá! O que você precisa saber?")
 
 while True:
+
   question = input("Você: ")
 
-  # Busca a resposta na Wikipedia
-  try:
-    response = wikipedia.summary(question, sentences=2)
-  except wikipedia.exceptions.PageError:
-    response = "Desculpe, não encontrei uma resposta para essa pergunta."
+  url = f"https://api.duckduckgo.com/?q={urllib.parse.quote_plus(question)}&format=json"
 
-  print("NamelessBOT:", response)
+  response = requests.get(url)
+  data = response.json()
+
+  # Extrai o campo correto com a resposta
+  abstract = data["AbstractText"]
+
+  print("NamelessBOT:", abstract)
 
   again = input("NamelessBOT: Você gostaria de saber de algo mais? ")
   if again.lower() == "não" or again.lower() == "n":
