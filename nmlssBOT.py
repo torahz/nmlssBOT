@@ -1,26 +1,37 @@
 from colorama import Fore, Style
+import requests 
+from bs4 import BeautifulSoup
 
-print(Fore.GREEN + Style.BRIGHT + """
-███    ███  █████  ██ ███    ██ 
-████  ████ ██   ██ ██ ████   ██ 
-██ ████ ██ ███████ ██ ██ ██  ██  
-██  ██  ██ ██   ██ ██ ██  ██ ██  
-██      ██ ██   ██ ██ ██   ████ 
+print(Fore.YELLOW + Style.BRIGHT + """
+███   ██ ███████ ██    ██ █████ ██   █████ ██████ ██████ █████  ██████ ████████
+████  ██ ██   ██ ███  ███ ██    ██   ██    ██     ██     ██   █ ██   █    ██
+██ ██ ██ ███████ ██ ██ ██ █████ ██   █████ ██████ ██████ █████  ██   █    ██
+██  ████ ██   ██ ██    ██ ██    ██   ██        ██     ██ ██   █ ██   █    ██
+██    ██ ██   ██ ██    ██ █████ ████ █████ ██████ ██████ █████  ██████    ██
 """ + Style.RESET_ALL)
 
-print("NamelessBOT: Olá! Sobre o que você gostaria de saber?")
+print("nmlssBOT: Olá! Sobre o que você gostaria de saber?")
 
 while True:
 
   pergunta = input("Você: ")
 
-  # código para buscar resposta omitido
+  url = f"https://desciclopedia.org/wiki/{pergunta}"
+  resposta = requests.get(url)
 
-  print("NamelessBOT:", resposta)
+  soup = BeautifulSoup(resposta.text, 'html.parser')
+  conteudo = soup.find('div', {'class': 'mw-parser-output'})
 
-  again = input("NamelessBOT: Você gostaria de saber de algo mais? ")
+  if conteudo is None:
+    resposta = "Desculpe, não encontrei uma resposta para isso na Desciclopédia."
+  else:
+    resposta = conteudo.text
+
+  print("nmlssBOT:", resposta)
+
+  again = input("nmlssBOT: Você gostaria de saber de algo mais? ")
   if again.lower() == "não" or again.lower() == "n":
-    print("NamelessBOT: Tudo bem, tenha um ótimo dia!")
+    print("nmlssBOT: Tudo bem, tenha um ótimo dia!")
     break
 
-print(Fore.GREEN + "Encerrando o NamelessBOT..." + Style.RESET_ALL)
+print(Fore.YELLOW + "Encerrando o nmlssBOT..." + Style.RESET_ALL)
