@@ -1,5 +1,12 @@
-import requests
-from bs4 import BeautifulSoup
+from colorama import Fore, Style
+
+print(Fore.GREEN + Style.BRIGHT + """
+███    ███  █████  ██ ███    ██ 
+████  ████ ██   ██ ██ ████   ██ 
+██ ████ ██ ███████ ██ ██ ██  ██  
+██  ██  ██ ██   ██ ██ ██  ██ ██  
+██      ██ ██   ██ ██ ██   ████ 
+""" + Style.RESET_ALL)
 
 print("NamelessBOT: Olá! Sobre o que você gostaria de saber?")
 
@@ -7,20 +14,13 @@ while True:
 
   pergunta = input("Você: ")
 
-  url = f"https://desciclopedia.org/wiki/{pergunta}"
-  resposta = requests.get(url)
+  # código para buscar resposta omitido
 
-  soup = BeautifulSoup(resposta.text, 'html.parser')
-  conteudo = soup.find('div', {'class': 'mw-parser-output'})
-
-  if conteudo is None:
-    print("NamelessBOT: Desculpe, não encontrei uma resposta para isso na Desciclopédia.")
-  else:
-    print("NamelessBOT:", conteudo.text)
+  print("NamelessBOT:", resposta)
 
   again = input("NamelessBOT: Você gostaria de saber de algo mais? ")
   if again.lower() == "não" or again.lower() == "n":
     print("NamelessBOT: Tudo bem, tenha um ótimo dia!")
     break
 
-print("Encerrando o NamelessBOT...")
+print(Fore.GREEN + "Encerrando o NamelessBOT..." + Style.RESET_ALL)
