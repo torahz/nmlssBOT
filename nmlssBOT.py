@@ -1,46 +1,22 @@
-import os
-import pathlib
-import json
-import requests
-from bs4 import BeautifulSoup
-from chat import Chat
+import nltk
+import wikipedia
 
-arquivo_respostas = pathlib.Path('respostas.json')
+print("NamelessBOT: Olá! O que você precisa saber?")
 
-try:
-    with open(arquivo_respostas) as arquivo:
-        respostas_aprendidas = json.load(arquivo)
-except FileNotFoundError:
-    respostas_aprendidas = {}
+while True:
+  question = input("Você: ")
 
-respostas_fixas = {
-    "oi": ["olá", "Oi tudo bem?", "Eae"],
-    "tudo bem?": ["Tudo ótimo", "Não poderia estar melhor"],
-    "qual seu nome?": ["Meu nome é Bot", "Pode me chamar de Bot"],
-    "como você está?": ["Estou bem, obrigado por perguntar!", "Não poderia estar melhor!"]
-}
+  # Busca a resposta na Wikipedia
+  try:
+    response = wikipedia.summary(question, sentences=2)
+  except wikipedia.exceptions.PageError:
+    response = "Desculpe, não encontrei uma resposta para essa pergunta."
 
-def busca_na_web(pergunta):
-    # (código da função busca_na_web)
-    pass
+  print("NamelessBOT:", response)
 
-def get_resposta(pergunta):
-    resposta_da_web = busca_na_web(pergunta)
-    resposta_fixa = respostas_fixas.get(pergunta)
-    resposta_aprendida = respostas_aprendidas.get(pergunta)
+  again = input("NamelessBOT: Você gostaria de saber de algo mais? ")
+  if again.lower() == "não" or again.lower() == "n":
+    print("NamelessBOT: Tudo bem, tenha um ótimo dia!")
+    break
 
-    if resposta_da_web:
-        return resposta_da_web
-    elif resposta_fixa:
-        return random.choice(resposta_fixa)
-    else:
-        return "Desculpe, não sei responder essa pergunta."
-
-def responde(pergunta):
-    while True:
-        pergunta = input("Você: ")
-        resposta = get_resposta(pergunta)
-        print("Bot:", resposta)
-
-# Executa o chatbot
-responde("Teste")
+print("Encerrando o NamelessBOT...")
