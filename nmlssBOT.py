@@ -1,39 +1,22 @@
-import subprocess
-import sys 
-
-def install(package):
-    subprocess.call([sys.executable, "-m", "pip", "install", package])
-
-def import_or_install(package):
-    try:
-        __import__(package)
-    except ImportError:
-        print(f"Instalando pacote {package}...")
-        install(package)
-
-import_or_install('pip') 
-
-import_or_install('requests')
-import_or_install('urllib3')
-
 import requests
-import urllib.parse
+from bs4 import BeautifulSoup
 
-print("NamelessBOT: Olá! O que você precisa saber?")
+print("NamelessBOT: Olá! Sobre o que você gostaria de saber?")
 
 while True:
 
-  question = input("Você: ")
+  pergunta = input("Você: ")
 
-  url = f"https://api.duckduckgo.com/?q={urllib.parse.quote_plus(question)}&format=json"
+  url = f"https://desciclopedia.org/wiki/{pergunta}"
+  resposta = requests.get(url)
 
-  response = requests.get(url)
-  data = response.json()
+  soup = BeautifulSoup(resposta.text, 'html.parser')
+  conteudo = soup.find('div', {'class': 'mw-parser-output'})
 
-  # Extrai o campo correto com a resposta
-  abstract = data["AbstractText"]
-
-  print("NamelessBOT:", abstract)
+  if conteudo is None:
+    print("NamelessBOT: Desculpe, não encontrei uma resposta para isso na Desciclopédia.")
+  else:
+    print("NamelessBOT:", conteudo.text)
 
   again = input("NamelessBOT: Você gostaria de saber de algo mais? ")
   if again.lower() == "não" or again.lower() == "n":
